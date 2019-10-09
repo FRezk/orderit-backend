@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.rezk.orderit.mc.domain.Categoria;
 import com.rezk.orderit.mc.domain.Cidade;
+import com.rezk.orderit.mc.domain.Cliente;
+import com.rezk.orderit.mc.domain.Endereco;
 import com.rezk.orderit.mc.domain.Estado;
 import com.rezk.orderit.mc.domain.Produto;
+import com.rezk.orderit.mc.domain.enums.TipoCliente;
 import com.rezk.orderit.mc.repositories.CategoriaRepository;
 import com.rezk.orderit.mc.repositories.CidadeRepository;
+import com.rezk.orderit.mc.repositories.ClienteRepository;
+import com.rezk.orderit.mc.repositories.EnderecoRepository;
 import com.rezk.orderit.mc.repositories.EstadoRepository;
 import com.rezk.orderit.mc.repositories.ProdutoRepository;
 
@@ -27,6 +32,10 @@ public class OrderitMcApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderitMcApplication.class, args);
@@ -63,5 +72,17 @@ public class OrderitMcApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "39285746173", TipoCliente.PESSOA_FISICA);
+		cli1.getTelefones().addAll(Arrays.asList("123456789", "987654321"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "apto 303", "Jardim", "020518-000", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "020518-000", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienteRepository.save(cli1);
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		
 	}
 }
