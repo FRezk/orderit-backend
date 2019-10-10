@@ -1,5 +1,6 @@
 package com.rezk.orderit.mc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class CategoriaService {
 		Optional<Categoria> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto nao encontrado id: " + id + " tipo: " + Categoria.class.getSimpleName()));
+	}
+	
+	public List<Categoria> findAll() {
+		return repo.findAll();
 	}
 	
 	public Categoria insert(Categoria categoria) {
