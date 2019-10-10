@@ -74,6 +74,7 @@ public class OrderitMcApplication implements CommandLineRunner {
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "39285746173", TipoCliente.PESSOA_FISICA);
+		
 		cli1.getTelefones().addAll(Arrays.asList("123456789", "987654321"));
 		
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "apto 303", "Jardim", "020518-000", cli1, c1);
@@ -81,8 +82,13 @@ public class OrderitMcApplication implements CommandLineRunner {
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 		
-		clienteRepository.save(cli1);
-		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		Cliente cli2 = new Cliente(null, "Fernando Rezk", "frezk@gmail.com", "45791346825", TipoCliente.PESSOA_JURIDICA);
+		Endereco e3 = new Endereco(null, "Eurico Gaspar Dultra", "1801", "Apto. 06", "Parada Inglesa", "020518-000", cli1, c2);
 		
+		cli2.getEnderecos().addAll(Arrays.asList(e3));
+		e3.setCliente(cli2);
+		
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 	}
 }
