@@ -1,5 +1,6 @@
 package com.rezk.orderit.mc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.rezk.orderit.mc.domain.Cidade;
 import com.rezk.orderit.mc.domain.Cliente;
 import com.rezk.orderit.mc.domain.Endereco;
 import com.rezk.orderit.mc.domain.Estado;
+import com.rezk.orderit.mc.domain.Pagamento;
+import com.rezk.orderit.mc.domain.PagamentoComBoleto;
+import com.rezk.orderit.mc.domain.PagamentoComCartao;
+import com.rezk.orderit.mc.domain.Pedido;
 import com.rezk.orderit.mc.domain.Produto;
+import com.rezk.orderit.mc.domain.enums.EstadoPagamento;
 import com.rezk.orderit.mc.domain.enums.TipoCliente;
 import com.rezk.orderit.mc.repositories.CategoriaRepository;
 import com.rezk.orderit.mc.repositories.CidadeRepository;
 import com.rezk.orderit.mc.repositories.ClienteRepository;
 import com.rezk.orderit.mc.repositories.EnderecoRepository;
 import com.rezk.orderit.mc.repositories.EstadoRepository;
+import com.rezk.orderit.mc.repositories.PagamentoRepository;
+import com.rezk.orderit.mc.repositories.PedidoRepository;
 import com.rezk.orderit.mc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class OrderitMcApplication implements CommandLineRunner {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderitMcApplication.class, args);
@@ -43,6 +55,8 @@ public class OrderitMcApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				
 		Categoria cat1 = new Categoria(null, "Hardware");
 		Categoria cat2 = new Categoria(null, "Software");
 		
@@ -88,7 +102,19 @@ public class OrderitMcApplication implements CommandLineRunner {
 		cli2.getEnderecos().addAll(Arrays.asList(e3));
 		e3.setCliente(cli2);
 		
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
 		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 	}
 }
