@@ -13,6 +13,7 @@ import com.rezk.orderit.mc.domain.Cidade;
 import com.rezk.orderit.mc.domain.Cliente;
 import com.rezk.orderit.mc.domain.Endereco;
 import com.rezk.orderit.mc.domain.Estado;
+import com.rezk.orderit.mc.domain.ItemPedido;
 import com.rezk.orderit.mc.domain.Pagamento;
 import com.rezk.orderit.mc.domain.PagamentoComBoleto;
 import com.rezk.orderit.mc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.rezk.orderit.mc.repositories.CidadeRepository;
 import com.rezk.orderit.mc.repositories.ClienteRepository;
 import com.rezk.orderit.mc.repositories.EnderecoRepository;
 import com.rezk.orderit.mc.repositories.EstadoRepository;
+import com.rezk.orderit.mc.repositories.ItemPedidoRepository;
 import com.rezk.orderit.mc.repositories.PagamentoRepository;
 import com.rezk.orderit.mc.repositories.PedidoRepository;
 import com.rezk.orderit.mc.repositories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class OrderitMcApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderitMcApplication.class, args);
@@ -116,5 +120,19 @@ public class OrderitMcApplication implements CommandLineRunner {
 		enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		
 	}
 }
