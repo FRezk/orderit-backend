@@ -63,6 +63,11 @@ public class OrderitMcApplication implements CommandLineRunner {
 				
 		Categoria cat1 = new Categoria(null, "Hardware");
 		Categoria cat2 = new Categoria(null, "Software");
+		Categoria cat3 = new Categoria(null, "Home stuff");
+		Categoria cat4 = new Categoria(null, "Electronics");
+		Categoria cat5 = new Categoria(null, "Gardening");
+		Categoria cat6 = new Categoria(null, "Decoration");
+		Categoria cat7 = new Categoria(null, "Perfumery");
 		
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Windows", 800.00);
@@ -75,7 +80,7 @@ public class OrderitMcApplication implements CommandLineRunner {
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat2));
 		
-		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
+		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 		
 		Estado est1 = new Estado(null, "Minas Gerais");
