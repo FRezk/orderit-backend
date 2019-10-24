@@ -38,7 +38,7 @@ public class ClienteService {
 	
 	public Cliente update(Cliente cliente) {
 		Cliente orm = find(cliente.getId());
-		updateCliente(orm, cliente);
+		updateData(orm, cliente);
 		return repo.save(orm);
 	}
 	
@@ -51,7 +51,7 @@ public class ClienteService {
 		}
 	}
 	
-	private void updateCliente(Cliente orm, Cliente updated) {
+	private void updateData(Cliente orm, Cliente updated) {
 		orm.setNome(updated.getNome());
 		orm.setEmail(updated.getEmail());
 	}

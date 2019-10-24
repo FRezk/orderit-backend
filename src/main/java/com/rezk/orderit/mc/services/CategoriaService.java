@@ -42,8 +42,9 @@ public class CategoriaService {
 	}
 	
 	public Categoria update(Categoria categoria) {
-		find(categoria.getId());
-		return repo.save(categoria);
+		Categoria orm = find(categoria.getId());
+		updateData(orm, categoria);
+		return repo.save(orm);
 	}
 	
 	public void delete(Integer id) {
@@ -53,6 +54,10 @@ public class CategoriaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Categoria id " + id + " has relationship with another data.");
 		}
+	}
+	
+	private void updateData(Categoria orm, Categoria updated) {
+		orm.setNome(updated.getNome());
 	}
 
 }
