@@ -53,7 +53,7 @@ public class ClienteService {
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Cliente id " + id + " has relationships with another data!");
+			throw new DataIntegrityException("Cliente id " + id + " has already 'pedidos'!");
 		}
 	}
 	
