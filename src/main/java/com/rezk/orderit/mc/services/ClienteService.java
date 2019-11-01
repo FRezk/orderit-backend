@@ -9,9 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.rezk.orderit.mc.domain.Categoria;
 import com.rezk.orderit.mc.domain.Cliente;
 import com.rezk.orderit.mc.repositories.ClienteRepository;
+import com.rezk.orderit.mc.repositories.EnderecoRepository;
 import com.rezk.orderit.mc.services.exceptions.DataIntegrityException;
 import com.rezk.orderit.mc.services.exceptions.ObjectNotFoundException;
 
@@ -20,6 +23,9 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
 		Optional<Cliente> cliente = repo.findById(id);
@@ -54,6 +60,14 @@ public class ClienteService {
 	private void updateData(Cliente orm, Cliente updated) {
 		orm.setNome(updated.getNome());
 		orm.setEmail(updated.getEmail());
+	}
+	
+	@Transactional
+	public Cliente insert(Cliente cliente) {
+		cliente.setId(null);
+		cliente = repo.save(cliente);
+		enderecoRepository.saveAll(cliente.getEnderecos());
+		return cliente;
 	}
 
 }
