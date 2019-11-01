@@ -2,22 +2,39 @@ package com.rezk.orderit.mc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.rezk.orderit.mc.domain.Cidade;
 import com.rezk.orderit.mc.domain.Cliente;
 import com.rezk.orderit.mc.domain.Endereco;
 import com.rezk.orderit.mc.domain.enums.TipoCliente;
+import com.rezk.orderit.mc.services.validation.ClienteInsert;
 
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 		// Cliente
+	
+	@NotEmpty(message = "Cliente needs a name!")
+	@Length(min = 3, max = 120, message = "Cliente name needs to be between 3 and 120 characters.")
 	private String nome;
+	
+	@NotEmpty(message = "Cliente needs an email!")
+	@Email(message = "Invalid e-mail!")
 	private String email;
+	
+	@NotEmpty(message = "Cliente needs a 'cpfOuCnpj'!")
 	private String cpfOuCnpj;
 	private Integer tipo;
 	
 		// Endereco
+	@NotEmpty(message = "Cliente needs a 'logradouro'!")
 	private String logradouro;
+	@NotEmpty(message = "Cliente needs a 'numero'!")
 	private String numero;
 	private String complemento;
 	private String bairro;
@@ -25,6 +42,8 @@ public class ClienteNewDTO implements Serializable {
 		// Cidade
 	private Integer cidadeId;
 	
+		// Telefones
+	@NotEmpty(message = "Cliente needs at least one 'telefone'!")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
