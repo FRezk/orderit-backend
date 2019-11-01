@@ -6,12 +6,18 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.rezk.orderit.mc.domain.enums.TipoCliente;
 import com.rezk.orderit.mc.dto.ClienteNewDTO;
+import com.rezk.orderit.mc.repositories.ClienteRepository;
 import com.rezk.orderit.mc.resources.exceptions.FieldMessage;
 import com.rezk.orderit.mc.services.validation.utils.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
+	
+	@Autowired
+	private ClienteRepository repo;
 	
 	@Override
 	public void initialize(ClienteInsert ann) {
@@ -26,6 +32,9 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		}
 		if(dto.getTipo() == TipoCliente.PESSOA_JURIDICA.getId() && !BR.isValidCNPJ(dto.getCpfOuCnpj())) {
 			list.add(new FieldMessage("cpfOuCNPJ", "invalid CNPJ!"));
+		}
+		if(repo.findByEmail(dto.getEmail()) != null) {
+			list.add(new FieldMessage("email", "Email already registered!"));
 		}
 
 		// Include custom tests here
