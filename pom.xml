@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.rezk.orderit</groupId>
-	<artifactId>orderit-mc</artifactId>
+	<artifactId>orderit</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>orderit-mc</name>
-	<description>Conceptual Modelling for OrderIt</description>
+	<description>OrderIt Backend</description>
 
 	<properties>
 		<java.version>1.8</java.version>
